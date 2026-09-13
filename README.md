@@ -34,10 +34,11 @@ npm start
 - Reports with date-range selector, revenue/profit/inventory/lay-by metrics, category bars, attention items, printable report view, and CSV export.
 - Settings with store details, VAT rate, receipt and invoice footers, quote terms, demo roles, SMTP test status, and reset demo data action.
 - Server-side SMTP endpoint at `/api/email` using Nodemailer. Quotes and the Settings test action surface the exact configuration error instead of claiming a message was sent.
+- Controls workspace with stocktake/counts, goods received, supplier returns, end-of-day cash-up, CRM communications, reminders, follow-ups, and repair/lay-by/appraisal update emails.
 
 ## Demo limitations
 
-This MVP deliberately has no database, authentication, server actions, payment gateway, or external accounting integration. All demo records are persisted to `localStorage` under `dewetware-store`; data is therefore browser-specific and should not be treated as production storage. The supplier purchase-order screen remains a local demonstration; goods received, supplier returns, end-of-day cash-up, credit-note accounting, and full CRM task management are represented in the domain model and are next production workflow slices.
+This MVP deliberately has no database, authentication, server actions, payment gateway, or external accounting integration. All demo records are persisted to `localStorage` under `dewetware-store`; data is therefore browser-specific and should not be treated as production storage. Dedicated VAT/payment/CRM report breakdowns, full customer related-record panels, and dedicated repair quote/approval controls remain documented partials in the functional verification matrix.
 
 Dates and currency use South African conventions: `en-ZA` dates and `ZAR` currency. The default VAT rate is 15% and can be changed in Settings for demonstration purposes.
 
@@ -58,7 +59,7 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 
 The `/api/email` route returns `SMTP not configured` until the required values are present. Configure and test delivery from Settings; browser code never opens an SMTP connection.
 
-See [docs/retail-gap-audit.md](docs/retail-gap-audit.md) for the implementation audit and remaining demo boundaries.
+See [docs/retail-gap-audit.md](docs/retail-gap-audit.md) for the implementation audit and [docs/functional-verification.md](docs/functional-verification.md) for the feature-by-feature proof matrix.
 
 ## Deploy
 
