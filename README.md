@@ -21,7 +21,7 @@ npm start
 
 ## Implemented
 
-- Dashboard with ZAR sales and gross-profit metrics, low-stock and repair alerts, lay-by balance, recent transactions, deadlines, quick actions, and an SVG sales chart.
+- Dashboard with ZAR sales and gross-profit metrics, low-stock and repair alerts, lay-by balance, recent transactions, deadlines, quick actions, and an SVG sales chart plotted from the stored sales with a working 7-day / 30-day period selector. Metric trends and details are calculated from the records, not fixed strings.
 - Point of Sale with inventory search, cart quantities, customer selection, discounts, 15% VAT, card/cash/EFT/split method selection, stock mutation, completed-sale history, and printable receipt view.
 - Inventory catalogue with product master data, search/filter controls, product creation/editing, stock adjustment reason and audit note, persistent stock ledger, pricing, material, gemstone, barcode, reorder and status data.
 - Quotes with inventory/manual lines, issue and expiry dates, draft/sent/accepted/declined/converted statuses, print, server email calls, and conversion-ready records that do not reduce stock while quoted.
@@ -30,8 +30,8 @@ npm start
 - Repair workshop queue with create flow, searchable statuses, status progression, due-date highlighting, timeline seed data, and print job card action.
 - Lay-by accounts with deposits, balances, due dates, additional payments, payment history, statuses, and printable receipt action.
 - Appraisals with valuation records and printable certificate view.
-- Suppliers with directory, account status, purchase-order creation flow, and exportable purchase-order list.
-- Reports with date-range selector, revenue/profit/inventory/lay-by metrics, category bars, attention items, printable report view, and CSV export.
+- Suppliers with directory, account status, and a purchase-order workflow that persists orders to the store: supplier, product line, quantity and expected delivery are captured on submit, written to `purchaseOrders` with an audit entry, and listed with order value and status.
+- Reports with a working date-range selector that filters the underlying sales, revenue/profit/inventory/lay-by metrics computed from the visible range, a payment-methods breakdown with its own CSV export, category bars derived from the catalogue, attention items, printable report view, and CSV export matching the visible table columns.
 - Settings with store details, VAT rate, receipt and invoice footers, quote terms, demo roles, SMTP test status, and reset demo data action.
 - Server-side SMTP endpoint at `/api/email` using Nodemailer. Quotes and the Settings test action surface the exact configuration error instead of claiming a message was sent.
 
@@ -58,7 +58,13 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 
 The `/api/email` route returns `SMTP not configured` until the required values are present. Configure and test delivery from Settings; browser code never opens an SMTP connection.
 
-See [docs/retail-gap-audit.md](docs/retail-gap-audit.md) for the implementation audit and remaining demo boundaries.
+Dates and currency are normalised so that server and browser render identically. `Intl.NumberFormat` groups
+`en-ZA` amounts differently under Node and Chromium (`R 18 500` against `R 18,500`), which mismatches on
+hydration, so `money()` formats the number and applies the South African space separator itself.
+
+See [docs/retail-gap-audit.md](docs/retail-gap-audit.md) for the original implementation audit, and
+[docs/functional-verification.md](docs/functional-verification.md) for the verification pass covering what was
+tested, the defects it found, and the remaining demo boundaries.
 
 ## Deploy
 
